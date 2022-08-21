@@ -1,5 +1,5 @@
-/****************************************************************************************** 
- *	Chili DirectX Framework Version 16.07.20											  *	
+/******************************************************************************************
+ *	Chili DirectX Framework Version 16.07.20											  *
  *	Game.h																				  *
  *	Copyright 2016 PlanetChili.net <http://www.planetchili.net>							  *
  *																						  *
@@ -23,24 +23,52 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Poo.h"
+#include "Dude.h"
+#include <random>
+#include "Target.h"
+#include "Speeder.h"
+#include "Immune.h"
 
 class Game
 {
 public:
-	Game( class MainWindow& wnd );
-	Game( const Game& ) = delete;
-	Game& operator=( const Game& ) = delete;
+	Game(class MainWindow& wnd);
+	Game(const Game&) = delete;
+	Game& operator=(const Game&) = delete;
 	void Go();
 private:
 	void ComposeFrame();
 	void UpdateModel();
 	/********************************/
 	/*  User Functions              */
+	void DrawGameOver(int x, int y);
+	void DrawStartGame(int x, int y);
+	void DrawTargetCounterLimits();
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	Keyboard kbd;
 	/********************************/
 	/*  User Variables              */
+	std::random_device rd;
+	std::mt19937 rng;
+	std::uniform_int_distribution<int> xDist;
+	std::uniform_int_distribution<int> yDist;
+	std::uniform_int_distribution<int> vxDist;
+	std::uniform_int_distribution<int> vyDist;
+
+	Dude dude;
+	Target target;
+	Speeder speeder;
+	Immune immune;
+	int pooIndex = 1;
+	static constexpr int nPoo = 100;
+	Poo poos[nPoo];
+	bool allEaten;
+
+	bool EnterIsNotPressed = true;
+
 	/********************************/
 };
