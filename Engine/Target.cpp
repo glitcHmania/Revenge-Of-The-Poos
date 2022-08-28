@@ -1,6 +1,6 @@
 #include "Target.h"
 
-Target::Target(int in_x, int in_y, int in_width, int in_height)
+Target::Target(float in_x, float in_y, float in_width, float in_height)
 {
 	x = in_x;
 	y = in_y;
@@ -10,11 +10,13 @@ Target::Target(int in_x, int in_y, int in_width, int in_height)
 
 void Target::Draw(Graphics& gfx)
 {
-	for (int i = x; i < x + width; ++i)
+	for (float i = x; i < x + width; ++i)
 	{
-		for (int j = y; j < y + height; ++j)
+		for (float j = y; j < y + height; ++j)
 		{
-			gfx.PutPixel(i, j, r, g, b);
+			int i_int = int(i);
+			int j_int = int(j);
+			gfx.PutPixel(i_int, j_int, r, g, b);
 		}
 	}
 }
@@ -51,12 +53,12 @@ void Target::SetIsEaten(bool boolean)
 	isEaten = boolean;
 }
 
-void Target::SetX(int new_x)
+void Target::SetX(float new_x)
 {
 	x = new_x;
 }
 
-void Target::SetY(int new_y)
+void Target::SetY(float new_y)
 {
 	y = new_y;
 }
@@ -79,7 +81,7 @@ void Target::targetCounter(Graphics& gfx)
 
 }
 
-int Target::GetCounterLength()
+float Target::GetCounterLength()
 {
 	return counter_length + 10;
 }

@@ -4,17 +4,17 @@
 class Immune
 {
 public:
-	Immune(int in_x, int in_y, int in_width, int in_height);
+	Immune(float in_x, float in_y, float in_width, float in_height);
 	void Draw(Graphics& gfx);
 	void ChangeColor();
 	void ProcessConsumption(const Dude& dude);
 	bool GetIsEaten();
 	int GetImmuneLevel();
 private:
-	int x;
-	int y;
-	int width;
-	int height;
+	float x;
+	float y;
+	float width;
+	float height;
 	int r = 228;
 	int g = 208;
 	int b = 10;

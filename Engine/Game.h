@@ -29,6 +29,7 @@
 #include "Target.h"
 #include "Speeder.h"
 #include "Immune.h"
+#include "FrameTimer.h"
 
 class Game
 {
@@ -54,10 +55,10 @@ private:
 	/*  User Variables              */
 	std::random_device rd;
 	std::mt19937 rng;
-	std::uniform_int_distribution<int> xDist;
-	std::uniform_int_distribution<int> yDist;
-	std::uniform_int_distribution<int> vxDist;
-	std::uniform_int_distribution<int> vyDist;
+	std::uniform_real_distribution<float> xDist;
+	std::uniform_real_distribution<float> yDist;
+	std::uniform_real_distribution<float> vxDist;
+	std::uniform_real_distribution<float> vyDist;
 
 	Dude dude;
 	Target target;
@@ -70,5 +71,6 @@ private:
 
 	bool EnterIsNotPressed = true;
 
+	FrameTimer ft;
 	/********************************/
 };

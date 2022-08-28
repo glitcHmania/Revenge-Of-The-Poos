@@ -4,16 +4,16 @@
 class Speeder
 {
 public:
-	Speeder(int in_x, int in_y, int in_width, int in_height);
+	Speeder(float in_x, float in_y, float in_width, float in_height);
 	void Draw(Graphics& gfx);
 	void ChangeColor();
 	void ProcessConsumption(const Dude& dude);
 	bool GetIsEaten();
 private:
-	int x;
-	int y;
-	int width;
-	int height;
+	float x;
+	float y;
+	float width;
+	float height;
 	int r = 5;
 	int g = 255;
 	int b = 5;

@@ -5,25 +5,25 @@
 class Dude
 {
 public:
-	Dude(int in_x, int in_y, int in_v);
-	void Update(const Keyboard& kbd);
+	Dude(float in_x, float in_y, float in_v);
+	void Update(const Keyboard& kbd, float deltaTime);
 	void Draw(Graphics& gfx);
 	void ClampToScreen();
-	int GetX() const;
-	int GetY() const;
-	int GetV() const;
-	void SetV(int a);
-	static int GetWidth();
-	static int GetHeight();
+	float GetX() const;
+	float GetY() const;
+	float GetV() const;
+	void SetV(float new_v);
+	static float GetWidth();
+	static float GetHeight();
 	void IsFinished();
 	bool GetHasEaten();
-	void fixSpeed(int vDiagonal, int vStraight, Keyboard& kbd);
+	void fixSpeed(Keyboard& kbd, float new_v);
 private:
 	bool hasEaten = false;
 	bool isNotFinished = true;
-	int x;
-	int y;
-	int v;
-	static constexpr int width = 20;
-	static constexpr int height = 20;
+	float x;
+	float y;
+	float v;
+	static constexpr float width = 20;
+	static constexpr float height = 20;
 };

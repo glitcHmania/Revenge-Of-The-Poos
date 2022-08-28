@@ -31,9 +31,9 @@ Game::Game(MainWindow& wnd)
 	rng(rd()),
 	xDist(0, 770),
 	yDist(0, 570),
-	vxDist(-2, 2),
-	vyDist(-2, 2),
-	dude(390, 250, 5),
+	vxDist(-250, 250),
+	vyDist(-250, 250),
+	dude(390, 250, 350),
 	target(xDist(rng), yDist(rng), 15, 15),
 	speeder(xDist(rng), yDist(rng), 15, 15),
 	immune(xDist(rng), yDist(rng), 15, 15)
@@ -54,6 +54,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	float deltaTime = ft.Mark();
 	if (target.GetIsEaten())
 	{
 		target.SetX(xDist(rng));
@@ -79,7 +80,7 @@ void Game::UpdateModel()
 		DrawTargetCounterLimits();
 		if (speeder.GetIsEaten())
 		{
-			dude.fixSpeed(3, 4, wnd.kbd);
+			dude.fixSpeed(wnd.kbd, 350.0f);
 		}
 		else
 		{
@@ -89,7 +90,7 @@ void Game::UpdateModel()
 				speeder.ProcessConsumption(dude);
 				speeder.Draw(gfx);
 			}
-			dude.fixSpeed(2, 3, wnd.kbd);
+			dude.fixSpeed(wnd.kbd, 200.0f);
 		}
 
 		if (!immune.GetIsEaten())
@@ -101,7 +102,7 @@ void Game::UpdateModel()
 			}
 		}
 
-		dude.Update(wnd.kbd);
+		dude.Update(wnd.kbd, deltaTime);
 		dude.ClampToScreen();
 
 		target.ProcessConsumtion(dude);
@@ -112,7 +113,7 @@ void Game::UpdateModel()
 			for (int i = 0; i < pooIndex; ++i)
 			{
 				assert(poos[i].initialized == true);
-				poos[i].Update();
+				poos[i].Update(deltaTime);
 				if (!immune.GetIsEaten())
 				{
 					poos[i].ProcessConsumption(dude);

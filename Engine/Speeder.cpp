@@ -1,6 +1,6 @@
 #include "Speeder.h"
 
-Speeder::Speeder(int in_x, int in_y, int in_width, int in_height)
+Speeder::Speeder(float in_x, float in_y, float in_width, float in_height)
 {
 	x = in_x;
 	y = in_y;
@@ -10,11 +10,13 @@ Speeder::Speeder(int in_x, int in_y, int in_width, int in_height)
 
 void Speeder::Draw(Graphics& gfx)
 {
-	for (int i = x; i < x + width; ++i)
+	for (float i = x; i < x + width; ++i)
 	{
-		for (int j = y; j < y + height; ++j)
+		for (float j = y; j < y + height; ++j)
 		{
-			gfx.PutPixel(i, j, r, g, b);
+			int i_int = int(i);
+			int j_int = int(j);
+			gfx.PutPixel(i_int, j_int, r, g, b);
 		}
 	}
 }
