@@ -33,12 +33,12 @@ Game::Game(MainWindow& wnd)
 	yDist(0, 570),
 	vxDist(-250, 250),
 	vyDist(-250, 250),
-	dude(390, 250, 350),
-	target(xDist(rng), yDist(rng), 15, 15),
-	speeder(xDist(rng), yDist(rng), 15, 15),
-	immune(xDist(rng), yDist(rng), 15, 15)
+	dude(Vector2D(390, 250), 350),
+	target(Vector2D(xDist(rng), yDist(rng)), 15, 15),
+	speeder(Vector2D(xDist(rng), yDist(rng)), 15, 15),
+	immune(Vector2D(xDist(rng), yDist(rng)), 15, 15)
 {
-	poos[0].Init(xDist(rng), yDist(rng), vxDist(rng), vyDist(rng));
+	poos[0].Init(Vector2D(xDist(rng), yDist(rng)), Vector2D(vxDist(rng), vyDist(rng)));
 }
 
 void Game::Go()
@@ -57,9 +57,8 @@ void Game::UpdateModel()
 	float deltaTime = ft.Mark();
 	if (target.GetIsEaten())
 	{
-		target.SetX(xDist(rng));
-		target.SetY(yDist(rng));
-		poos[pooIndex].Init(xDist(rng), yDist(rng), vxDist(rng), vyDist(rng));
+		target.SetPos(Vector2D(xDist(rng), yDist(rng)));
+		poos[pooIndex].Init(Vector2D(xDist(rng), yDist(rng)), Vector2D(vxDist(rng), vyDist(rng)));
 		poos[pooIndex].initialized = true;
 		pooIndex += 1;
 		target.SetIsEaten(false);

@@ -1,18 +1,17 @@
 #include "Immune.h"
 
-Immune::Immune(float in_x, float in_y, float in_width, float in_height)
+Immune::Immune(Vector2D& in_pos, float in_width, float in_height)
 {
-	x = in_x;
-	y = in_y;
+	pos = in_pos;
 	width = in_width;
 	height = in_height;
 }
 
 void Immune::Draw(Graphics& gfx)
 {
-	for (float i = x; i < x + width; ++i)
+	for (float i = pos.x; i < pos.x + width; ++i)
 	{
-		for (float j = y; j < y + height; ++j)
+		for (float j = pos.y; j < pos.y + height; ++j)
 		{
 			int i_int = int(i);
 			int j_int = int(j);
@@ -34,10 +33,10 @@ void Immune::ChangeColor()
 
 void Immune::ProcessConsumption(const Dude& dude)
 {
-	if (dude.GetX() <= x + width &&
-		dude.GetX() + dude.GetWidth() >= x &&
-		dude.GetY() <= y + height &&
-		dude.GetY() + dude.GetHeight() >= y)
+	if (dude.GetPos().x <= pos.x + width &&
+		dude.GetPos().x + dude.GetWidth() >= pos.x &&
+		dude.GetPos().y <= pos.y + height &&
+		dude.GetPos().y + dude.GetHeight() >= pos.y)
 	{
 		isEaten = true;
 	}

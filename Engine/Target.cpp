@@ -1,18 +1,17 @@
 #include "Target.h"
 
-Target::Target(float in_x, float in_y, float in_width, float in_height)
+Target::Target(Vector2D&in_pos, float in_width, float in_height)
 {
-	x = in_x;
-	y = in_y;
+	pos = in_pos;
 	width = in_width;
 	height = in_height;
 }
 
 void Target::Draw(Graphics& gfx)
 {
-	for (float i = x; i < x + width; ++i)
+	for (float i = pos.x; i < pos.x + width; ++i)
 	{
-		for (float j = y; j < y + height; ++j)
+		for (float j = pos.y; j < pos.y + height; ++j)
 		{
 			int i_int = int(i);
 			int j_int = int(j);
@@ -34,10 +33,10 @@ void Target::ChangeColor()
 
 void Target::ProcessConsumtion(const Dude& dude)
 {
-	if (dude.GetX() <= x + width &&
-		dude.GetX() + dude.GetWidth() >= x &&
-		dude.GetY() <= y + height &&
-		dude.GetY() + dude.GetHeight() >= y)
+	if (dude.GetPos().x <= pos.x + width &&
+		dude.GetPos().x + dude.GetWidth() >= pos.x &&
+		dude.GetPos().y <= pos.y + height &&
+		dude.GetPos().y + dude.GetHeight() >= pos.y)
 	{
 		isEaten = true;
 	}
@@ -53,14 +52,9 @@ void Target::SetIsEaten(bool boolean)
 	isEaten = boolean;
 }
 
-void Target::SetX(float new_x)
+void Target::SetPos(Vector2D& new_pos)
 {
-	x = new_x;
-}
-
-void Target::SetY(float new_y)
-{
-	y = new_y;
+	pos = new_pos;
 }
 
 void Target::targetCounter(Graphics& gfx)

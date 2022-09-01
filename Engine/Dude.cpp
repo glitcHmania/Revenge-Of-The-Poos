@@ -1,10 +1,10 @@
 #include "Dude.h"
 #include <math.h>
 
-Dude::Dude(float in_x, float in_y, float in_v)
+
+Dude::Dude(Vector2D& in_pos, float in_v)
 {
-	x = in_x;
-	y = in_y;
+	pos = in_pos;
 	v = in_v;
 }
 
@@ -14,27 +14,27 @@ void Dude::Update(const Keyboard& kbd, float deltaTime)
 	{
 		if (kbd.KeyIsPressed(VK_RIGHT))
 		{
-			x += v * deltaTime;
+			pos.x += v * deltaTime;
 		}
 		if (kbd.KeyIsPressed(VK_LEFT))
 		{
-			x -= v * deltaTime;
+			pos.x -= v * deltaTime;
 		}
 		if (kbd.KeyIsPressed(VK_UP))
 		{
-			y -= v * deltaTime;
+			pos.y -= v * deltaTime;
 		}
 		if (kbd.KeyIsPressed(VK_DOWN))
 		{
-			y += v * deltaTime;
+			pos.y += v * deltaTime;
 		}
 	}
 }
 
 void Dude::Draw(Graphics& gfx)
 {
-	int x_int = int(x);
-	int y_int = int(y);
+	int x_int = int(pos.x);
+	int y_int = int(pos.y);
 	gfx.PutPixel(7 + x_int, 0 + y_int, 0, 0, 0);
 	gfx.PutPixel(8 + x_int, 0 + y_int, 0, 0, 0);
 	gfx.PutPixel(9 + x_int, 0 + y_int, 0, 0, 0);
@@ -356,34 +356,29 @@ void Dude::Draw(Graphics& gfx)
 void Dude::ClampToScreen()
 {
 	//For X Axis
-	if (x > Graphics::ScreenWidth - width)
+	if (pos.x > Graphics::ScreenWidth - width)
 	{
-		x = Graphics::ScreenWidth - width;
+		pos.x = Graphics::ScreenWidth - width;
 	}
-	else if (x <= 0)
+	else if (pos.x <= 0)
 	{
-		x = 0;
+		pos.x = 0;
 	}
 
 	//For Y Axis
-	if (y > Graphics::ScreenHeight - height)
+	if (pos.y > Graphics::ScreenHeight - height)
 	{
-		y = Graphics::ScreenHeight - height;
+		pos.y = Graphics::ScreenHeight - height;
 	}
-	else if (y < 0)
+	else if (pos.y < 0)
 	{
-		y = 0;
+		pos.y = 0;
 	}
 }
 
-float Dude::GetX() const
+Vector2D Dude::GetPos() const
 {
-	return x;
-}
-
-float Dude::GetY() const
-{
-	return y;
+	return pos;
 }
 
 float Dude::GetV() const

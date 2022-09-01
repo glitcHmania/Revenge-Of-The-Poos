@@ -1,18 +1,16 @@
 #include "Poo.h"
 
-void Poo::Init(float in_x, float in_y, float in_vx, float in_vy)
+void Poo::Init(Vector2D& in_pos, Vector2D& in_vel)
 {
-	x = in_x;
-	y = in_y;
-	vx = in_vx;
-	vy = in_vy;
+	pos = in_pos;
+	vel = in_vel;
 	initialized = true;
 }
 
 void Poo::Draw(Graphics& gfx)
 {
-	int x_int = int(x);
-	int y_int = int(y);
+	int x_int = int(pos.x);
+	int y_int = int(pos.y);
 	gfx.PutPixel(14 + x_int, 0 + y_int, 138, 77, 0);
 	gfx.PutPixel(7 + x_int, 1 + y_int, 138, 77, 0);
 	gfx.PutPixel(13 + x_int, 1 + y_int, 138, 77, 0);
@@ -248,40 +246,40 @@ void Poo::Draw(Graphics& gfx)
 
 void Poo::Update(float deltaTime)
 {
-	x += vx * deltaTime;
-	y += vy * deltaTime;
+	pos.x += vel.x * deltaTime;
+	pos.y += vel.y * deltaTime;
 
 	//Clamp Screen For X Axis
-	if (x > Graphics::ScreenWidth - width)
+	if (pos.x > Graphics::ScreenWidth - width)
 	{
-		x = Graphics::ScreenWidth - height;
-		vx = -vx;
+		pos.x = Graphics::ScreenWidth - height;
+		vel.x = -vel.x;
 	}
-	else if (x < 0)
+	else if (pos.x < 0)
 	{
-		x = 0;
-		vx = -vx;
+		pos.x = 0;
+		vel.x = -vel.x;
 	}
 
 	//Clamp Screen For Y Axis
-	if (y > Graphics::ScreenHeight - width)
+	if (pos.y > Graphics::ScreenHeight - width)
 	{
-		y = Graphics::ScreenHeight - height;
-		vy = -vy;
+		pos.y = Graphics::ScreenHeight - height;
+		vel.y = -vel.y;
 	}
-	else if (y < 0)
+	else if (pos.y < 0)
 	{
-		y = 0;
-		vy = -vy;
+		pos.y = 0;
+		vel.y = -vel.y;
 	}
 }
 
 void Poo::ProcessConsumption(const Dude& dude)
 {
-	if (dude.GetX() <= x + width &&
-		dude.GetX() + dude.GetWidth() >= x &&
-		dude.GetY() <= y + height &&
-		dude.GetY() + dude.GetHeight() >= y)
+	if (dude.GetPos().x <= pos.x + width &&
+		dude.GetPos().x + dude.GetWidth() >= pos.x &&
+		dude.GetPos().y <= pos.y + height &&
+		dude.GetPos().y + dude.GetHeight() >= pos.y)
 	{
 		isEaten = true;
 	}

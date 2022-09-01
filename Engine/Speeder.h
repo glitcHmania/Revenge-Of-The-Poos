@@ -1,17 +1,17 @@
 #pragma once
 #include "Graphics.h"
 #include "Dude.h"
+#include "Vector2D.h"
 class Speeder
 {
 public:
-	Speeder(float in_x, float in_y, float in_width, float in_height);
+	Speeder(Vector2D& in_pos, float in_width, float in_height);
 	void Draw(Graphics& gfx);
 	void ChangeColor();
 	void ProcessConsumption(const Dude& dude);
 	bool GetIsEaten();
 private:
-	float x;
-	float y;
+	Vector2D pos;
 	float width;
 	float height;
 	int r = 5;

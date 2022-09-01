@@ -30,6 +30,7 @@
 #include "Speeder.h"
 #include "Immune.h"
 #include "FrameTimer.h"
+#include "Vector2D.h"
 
 class Game
 {
