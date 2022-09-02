@@ -14,8 +14,8 @@ public:
 private:
 	Vector2D pos;
 	Vector2D vel;
-	static constexpr float width = 24;
-	static constexpr float height = 24;
+	static constexpr float width = 24.0f;
+	static constexpr float height = 24.0f;
 	bool isEaten = false;
 };
 

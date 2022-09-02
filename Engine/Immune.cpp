@@ -1,10 +1,8 @@
 #include "Immune.h"
 
-Immune::Immune(Vector2D& in_pos, float in_width, float in_height)
+Immune::Immune(Vector2D& in_pos)
 {
 	pos = in_pos;
-	width = in_width;
-	height = in_height;
 }
 
 void Immune::Draw(Graphics& gfx)

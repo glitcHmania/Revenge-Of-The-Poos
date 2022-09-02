@@ -70,7 +70,7 @@ private:
 	Poo poos[nPoo];
 	bool allEaten;
 
-	bool EnterIsNotPressed = true;
+	bool GamePaused = true;
 
 	FrameTimer ft;
 	/********************************/

@@ -1,10 +1,8 @@
 #include "Speeder.h"
 
-Speeder::Speeder(Vector2D& in_pos, float in_width, float in_height)
+Speeder::Speeder(Vector2D& in_pos)
 {
 	pos = in_pos;
-	width = in_width;
-	height = in_height;
 }
 
 void Speeder::Draw(Graphics& gfx)

@@ -2,31 +2,52 @@
 #include <math.h>
 
 
-Dude::Dude(Vector2D& in_pos, float in_v)
+Dude::Dude(Vector2D& in_pos)
 {
 	pos = in_pos;
-	v = in_v;
 }
 
-void Dude::Update(const Keyboard& kbd, float deltaTime)
+void Dude::UpdateKbd(const Keyboard& kbd, float deltaTime)
 {
+	Vector2D vel = Vector2D(0.0f, 0.0f);
 	if (isNotFinished)
 	{
 		if (kbd.KeyIsPressed(VK_RIGHT))
 		{
-			pos.x += v * deltaTime;
+			vel.x += 1.0f;
 		}
 		if (kbd.KeyIsPressed(VK_LEFT))
 		{
-			pos.x -= v * deltaTime;
+			vel.x -= 1.0f;
 		}
 		if (kbd.KeyIsPressed(VK_UP))
 		{
-			pos.y -= v * deltaTime;
+			vel.y -= 1.0f;
 		}
 		if (kbd.KeyIsPressed(VK_DOWN))
 		{
-			pos.y += v * deltaTime;
+			vel.y += 1.0f ;
+		}
+		pos += vel.GetNormalized() * v * deltaTime;
+	}
+}
+
+void Dude::UpdateMs(const Keyboard& kbd, float deltaTime, const Mouse& mouse)
+{
+	if (isNotFinished)
+	{
+		if (mouse.LeftIsPressed())
+		{
+			const Vector2D center = pos + Vector2D(width / 2.0f, height / 2.0f);
+			Vector2D targetPos = Vector2D(float(mouse.GetPosX()), float(mouse.GetPosY()));
+			if (!(center.x > targetPos.x - 2.0f &&
+				center.x < targetPos.x + 2.0f &&
+				center.y > targetPos.y - 2.0f &&
+				center.y < targetPos.y + 2.0f ))
+			{
+				const Vector2D distance = targetPos - center;
+				pos += distance.GetNormalized() * deltaTime * v;
+			}
 		}
 	}
 }
@@ -411,20 +432,4 @@ bool Dude::GetHasEaten()
 {
 	return hasEaten;
 }
-
-void Dude::fixSpeed(Keyboard& kbd, float new_v)
-{
-	if ((kbd.KeyIsPressed(VK_DOWN) && kbd.KeyIsPressed(VK_RIGHT)) ||
-		(kbd.KeyIsPressed(VK_DOWN) && kbd.KeyIsPressed(VK_LEFT)) ||
-		(kbd.KeyIsPressed(VK_UP) && kbd.KeyIsPressed(VK_RIGHT)) ||
-		(kbd.KeyIsPressed(VK_UP) && kbd.KeyIsPressed(VK_LEFT)))
-	{
-		v = new_v / float(sqrt(2));
-	}
-	else
-	{
-		v = new_v ;
-	}
-}
-
 

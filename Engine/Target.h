@@ -5,7 +5,7 @@
 class Target
 {
 public:
-	Target(Vector2D& in_pos, float in_width, float in_height);
+	Target(Vector2D& in_pos);
 	void Draw(Graphics& gfx);
 	void ChangeColor();
 	void ProcessConsumtion(const Dude& dude);
@@ -20,8 +20,8 @@ private:
 	bool relocated = false;
 	bool isEaten = false;
 	Vector2D pos;
-	float width;
-	float height;
+	float width = 15.0f;
+	float height = 15.0f;
 	int r = 5;
 	int g = 0;
 	int b = 250;

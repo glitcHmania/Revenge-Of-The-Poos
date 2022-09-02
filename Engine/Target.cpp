@@ -1,10 +1,8 @@
 #include "Target.h"
 
-Target::Target(Vector2D&in_pos, float in_width, float in_height)
+Target::Target(Vector2D&in_pos)
 {
 	pos = in_pos;
-	width = in_width;
-	height = in_height;
 }
 
 void Target::Draw(Graphics& gfx)

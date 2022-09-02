@@ -33,10 +33,10 @@ Game::Game(MainWindow& wnd)
 	yDist(0, 570),
 	vxDist(-250, 250),
 	vyDist(-250, 250),
-	dude(Vector2D(390, 250), 350),
-	target(Vector2D(xDist(rng), yDist(rng)), 15, 15),
-	speeder(Vector2D(xDist(rng), yDist(rng)), 15, 15),
-	immune(Vector2D(xDist(rng), yDist(rng)), 15, 15)
+	dude(Vector2D(390, 250)),
+	target(Vector2D(xDist(rng), yDist(rng))),
+	speeder(Vector2D(xDist(rng), yDist(rng))),
+	immune(Vector2D(xDist(rng), yDist(rng)))
 {
 	poos[0].Init(Vector2D(xDist(rng), yDist(rng)), Vector2D(vxDist(rng), vyDist(rng)));
 }
@@ -54,7 +54,11 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	// Calculating deltaTime
 	float deltaTime = ft.Mark();
+
+	// Checking if target is consumed
+	// Spawning poo and the next target
 	if (target.GetIsEaten())
 	{
 		target.SetPos(Vector2D(xDist(rng), yDist(rng)));
@@ -65,33 +69,47 @@ void Game::UpdateModel()
 		target.SetRelocated(true);
 	}
 
-
-	if (EnterIsNotPressed)
+	// Checking if the game is paused
+	if (GamePaused)
 	{
+		// Drawing title screen
 		DrawStartGame(375, 275);
-		if (wnd.kbd.KeyIsPressed(VK_RETURN))
+
+		// Starting the game if "RETURN" or "LEFT CLICK" is pressed
+		if (wnd.mouse.LeftIsPressed())
 		{
-			EnterIsNotPressed = false;
+			GamePaused = false;
+		}
+		else if (wnd.kbd.KeyIsPressed(VK_RETURN))
+		{
+			GamePaused = false;
 		}
 	}
 	else
 	{
+		// Drawing the borders of target counter bar
 		DrawTargetCounterLimits();
+
+		// Speeding up the dude if the speeder is consumed
 		if (speeder.GetIsEaten())
 		{
-			dude.fixSpeed(wnd.kbd, 350.0f);
+			dude.SetV(400.0f);
 		}
 		else
 		{
-			if (pooIndex >= 5 && pooIndex < 9)
+			// Keeping the speeder perk spawned for two rounds
+			// Drawing the speeder perk, checking if it is colliding with dude and making it glow
+			if (pooIndex >= 5 && pooIndex < 7)
 			{
 				speeder.ChangeColor();
 				speeder.ProcessConsumption(dude);
 				speeder.Draw(gfx);
 			}
-			dude.fixSpeed(wnd.kbd, 200.0f);
+			dude.SetV(200.0f);
 		}
 
+		// Keeping the immunity perk spawned for one round
+		// Drawing the immunity perk and checking if it is colliding with dude
 		if (!immune.GetIsEaten())
 		{
 			if (pooIndex == immune.GetImmuneLevel())
@@ -101,20 +119,33 @@ void Game::UpdateModel()
 			}
 		}
 
-		dude.Update(wnd.kbd, deltaTime);
-		dude.ClampToScreen();
-
+		// Checking if target is colliding with dude and making it glow
 		target.ProcessConsumtion(dude);
 		target.ChangeColor();
 
+		// Activating the mouse controls for dude
+		dude.UpdateMs(wnd.kbd, deltaTime, wnd.mouse);
+
+		// Activating the keyboard controls for dude
+		//dude.UpdateKbd(wnd.kbd, deltaTime);
+
+		// Keeping the dude inside of the screen
+		dude.ClampToScreen();
+
+		// Checking if the dude consumed the target
 		if (!dude.GetHasEaten())
 		{
 			for (int i = 0; i < pooIndex; ++i)
 			{
 				assert(poos[i].initialized == true);
+
+				// Making the poos move
 				poos[i].Update(deltaTime);
+
+				// Checking if the immunity is activated
 				if (!immune.GetIsEaten())
 				{
+					// Checking if poos are colliding with dude
 					poos[i].ProcessConsumption(dude);
 				}
 				else
@@ -131,6 +162,7 @@ void Game::UpdateModel()
 	}
 }
 
+// Drawing UI objects
 void Game::DrawGameOver(int x, int y)
 {
 	gfx.PutPixel(3 + x, 8 + y, 12, 12, 12);
@@ -861,7 +893,6 @@ void Game::DrawGameOver(int x, int y)
 	gfx.PutPixel(47 + x, 39 + y, 38, 38, 38);
 
 }
-
 void Game::DrawStartGame(int x, int y)
 {
 	gfx.PutPixel(11 + x, 10 + y, 255, 255, 255);
@@ -1491,7 +1522,6 @@ void Game::DrawStartGame(int x, int y)
 	gfx.PutPixel(46 + x, 38 + y, 38, 38, 38);
 
 }
-
 void Game::DrawTargetCounterLimits()
 {
 	for (int x = 6; x < 10; ++x)
@@ -1512,10 +1542,10 @@ void Game::DrawTargetCounterLimits()
 
 void Game::ComposeFrame()
 {
+	// Drawing game objects
 	dude.Draw(gfx);
 	target.Draw(gfx);
 	target.targetCounter(gfx);
-
 	for (int i = 0; i < pooIndex; ++i)
 	{
 		assert(poos[i].initialized == true);
@@ -1527,8 +1557,10 @@ void Game::ComposeFrame()
 
 	for (int i = 0; i < pooIndex; ++i)
 	{
+		// Checking if the dude is dead or all the targets are consumed
 		if ((poos[i].GetIsEaten()) || (target.GetCounterLength() >= 790))
 		{
+			// Drawing end screen
 			DrawGameOver(375, 275);
 			dude.IsFinished();
 		}
